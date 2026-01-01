@@ -58,8 +58,7 @@ BIN_ISO = \
 	bin/signiso
 
 LIBS_ISO = \
-	$(wildcard lib/util-iso*.sh) \
-	lib/util-publish.sh
+	$(wildcard lib/util-iso*.sh)
 
 SHARED_ISO = \
 	data/pacman-drivers.conf \
