@@ -53,9 +53,8 @@ LIST_ISO = \
 
 BIN_ISO = \
 	bin/buildiso \
-	bin/deployiso \
 	bin/buildall \
-    bin/checksumiso \
+        bin/checksumiso \
 	bin/signiso
 
 LIBS_ISO = \
