@@ -69,7 +69,7 @@ miso_mount_root() {
     local copytoram_size=$(getarg overlay_root_size=)
     local checksum="$(getarg checksum=)"
 
-    [[ -z "${misobasedir}" ]] && misobasedir="garuda"
+    [[ -z "${misobasedir}" ]] && misobasedir="arch"
     [[ -z "${overlay_root_size}" ]] && overlay_root_size="75%"
     [[ -z "${copytoram_size}" ]] && copytoram_size="75%"
 

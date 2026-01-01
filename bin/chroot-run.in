@@ -124,7 +124,7 @@ umask 0022
 
 # Sanity check
 if [[ ! -f "$working_dir/.distro-tools" ]]; then
-    die "'%s' does not appear to be a garuda chroot." "$working_dir"
+    die "'%s' does not appear to be a distro chroot." "$working_dir"
 elif [[ $(cat "$working_dir/.distro-tools") != $version ]]; then
     die "chroot '%s' is not at version %s. Please rebuild." "$working_dir" "$version"
 fi
