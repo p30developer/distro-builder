@@ -109,7 +109,7 @@ display_settings(){
 
 load_user_info
 
-load_config "${USERCONFDIR}/garuda-tools.conf" || load_config "${SYSCONFDIR}/garuda-tools.conf"
+load_config "${USERCONFDIR}/distro-tools.conf" || load_config "${SYSCONFDIR}/distro-tools.conf"
 
 # to force old way to have buildiso run in iso-profiles dir
 # run_dir=$(pwd)
@@ -202,7 +202,7 @@ shift $(($OPTIND - 1))
 if ${initialize}; then
 	msg "Initialize iso profiles ${branch}"
 	init_profiles
-	msg2 "Done: iso profiles are stored in /var/cache/garuda-tools/iso-profiles"
+	msg2 "Done: iso profiles are stored in /var/cache/distro-tools/iso-profiles"
 	exit 0
 fi
 
