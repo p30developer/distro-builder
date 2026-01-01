@@ -58,7 +58,7 @@ set_xdm(){
 configure_branding(){
     msg2 "Configuring branding"
     echo "---
-componentName:  garuda
+componentName:  persianosx
 
 # This selects between different welcome texts. When false, uses
 # the traditional 'Welcome to the %1 installer.', and when true,
@@ -160,7 +160,7 @@ style:
    SidebarBackground:    "\"${sidebarbackground}"\"
    SidebarText:          "\"${sidebartext}"\"
    SidebarTextCurrent:    "\"${sidebartextcurrent}"\"
-   SidebarBackgroundCurrent: "\"${sidebarbackgroundcurrent}"\"" > $1/usr/share/calamares/branding/garuda/branding.desc
+   SidebarBackgroundCurrent: "\"${sidebarbackgroundcurrent}"\"" > $1/usr/share/calamares/branding/persianosx/branding.desc
 }
 
 configure_polkit_user_rules(){
@@ -253,7 +253,7 @@ configure_system(){
     configure_journald "$1"
 
     # Prevent some services to be started in the livecd
-    echo 'File created by garuda-tools. See systemd-update-done.service(8).' \
+    echo 'File created by distro-tools. See systemd-update-done.service(8).' \
     | tee "${path}/etc/.updated" >"${path}/var/.updated"
 
     msg2 "Disable systemd-gpt-auto-generator"
@@ -400,6 +400,6 @@ clean_up_image(){
     fi
 	find "$1" -name *.pacnew -name *.pacsave -name *.pacorig -delete
 	rm -f "$1"/boot/grub/grub.cfg
-	rm -f "$1"/var/lib/garuda/partial_upgrade
-    rm -rf "$1"/var/lib/garuda/tmp/
+	rm -f "$1"/var/lib/distro-tools/partial_upgrade
+    rm -rf "$1"/var/lib/distro-tools/tmp/
 }

@@ -20,11 +20,11 @@ build_edition() {
 # Initialize building
 rm -rf --one-file-system /var/cache/distro-tools/persianosx-chroots/buildiso/*
 buildiso -i
-source /var/cache/distro-tools/garuda-builds/.env
+source /var/cache/distro-tools/distro-builds/.env
 
 # Build our ISO's 
 for edition in "${TO_BUILD[@]}"; do
-    build_edition garuda "$edition"
+    build_edition distro "$edition"
 done
 
 

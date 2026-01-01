@@ -45,7 +45,6 @@ clean=false
 
 usage() {
     echo "Usage: ${0##*/} [options]"
-   #echo "    -s            Sync garuda tree"
     echo "    -a            Sync arch abs"
     echo '    -c            Clean package tree'
     echo '    -q            Query settings'
@@ -79,7 +78,5 @@ prepare_dir "${tree_dir_abs}"
 ${pretend} && display_settings && exit 1
 
 ${clean} && clean_dir "${tree_dir}"
-
-#${sync} && sync_tree_garuda
 
 ${abs} && sync_tree_abs
