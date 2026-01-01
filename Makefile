@@ -10,7 +10,7 @@ SYSCONF = \
 BIN_BASE = \
 	bin/mkchroot \
 	bin/basestrap \
-	bin/persianosx-chroot \
+	bin/distro-chroot \
 	bin/fstabgen \
 	bin/signfile \
 	bin/chroot-run
