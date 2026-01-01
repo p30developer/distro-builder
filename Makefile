@@ -119,9 +119,6 @@ install_base:
 	install -dm0755 $(DESTDIR)$(PREFIX)/share/distro-tools
 	install -m0644 ${SHARED_BASE} $(DESTDIR)$(PREFIX)/share/distro-tools
 
-	install -dm0755 $(DESTDIR)$(PREFIX)/share/applications
-	install -m0644 ${APP_BASE} $(DESTDIR)$(PREFIX)/share/applications
-
 install_pkg:
 	install -dm0755 $(DESTDIR)$(SYSCONFDIR)/distro-tools/pkg.list.d
 	install -m0644 ${LIST_PKG} $(DESTDIR)$(SYSCONFDIR)/distro-tools/pkg.list.d
