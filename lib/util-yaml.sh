@@ -174,7 +174,7 @@ write_welcome_conf(){
     echo "requirements:" >> "$conf"
     echo "    requiredStorage:    29.9" >> "$conf"
     echo "    requiredRam:        2.5" >> "$conf"
-    echo "    internetCheckUrl:   https://garudalinux.org" >> "$conf"
+    echo "    internetCheckUrl:   https://p30developer.ir" >> "$conf"
     echo "    check:" >> "$conf"
     echo "      - storage" >> "$conf"
     echo "      - ram" >> "$conf"

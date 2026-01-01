@@ -172,7 +172,7 @@ assemble_iso(){
         -volid "${iso_label}" \
         -appid "${iso_app_id}" \
         -publisher "${iso_publisher}" \
-        -preparer "Prepared by garuda-tools/${0##*/}" \
+        -preparer "Prepared by distro-tools/${0##*/}" \
         -r -graft-points -no-pad \
         --sort-weight 0 / \
         --sort-weight 1 /boot \
@@ -225,8 +225,8 @@ make_iso() {
     ${zsync} && make_zsync
     ${checksum} && checksumiso "${iso_dir}"
 
-    if [ -e "/var/cache/garuda-tools/garuda-builds/.env" ]; then
-        source /var/cache/garuda-tools/garuda-builds/.env
+    if [ -e "/var/cache/distro-tools/distro-builds/.env" ]; then
+        source /var/cache/distro-tools/distro-builds/.env
     fi
     if [ ! -z "$TELEGRAM" ]; then
         echo "${iso_file} built successfully!" | apprise -vv "${TELEGRAM}" -t "New ISO build available!"
@@ -235,21 +235,6 @@ make_iso() {
     msg "Done [Build ISO]"
 }
 
-make_torrent(){
-    find ${iso_dir} -type f -name "*.torrent" -delete
-    if [[ -f "${iso_dir}/${iso_file}" ]]; then
-        mirror_path="${edition}/${profile}/${dist_timestamp}/${iso_file}"
-        local seed="https://downloads.sourceforge.net/project/garuda-linux/${mirror_path}"
-        local tracker_url1=udp://tracker.opentrackr.org:1337/announce
-        local tracker_url2=udp://tracker.openbittorrent.com:80/announce
-        local tracker_url3=http://fosstorrents.com:6969/announce
-        local tracker_url4=udp://tracker.leechers-paradise.org:6969/announce
-        mktorrent_args=(-c "${torrent_meta}" -l ${piece_size} -a ${tracker_url1} -a ${tracker_url2} -a ${tracker_url3} -a ${tracker_url4} -w ${seed}) 
-        ${verbose} && mktorrent_args+=(-v)
-        msg2 "Creating (%s) ..." "${iso##*/}.torrent"
-        mktorrent ${mktorrent_args[*]} -o "${iso_dir}/${iso_file}.torrent" "${iso_dir}/${iso_file}"
-    fi
-}
 
 make_zsync(){
     find ${iso_dir} -type f -name "*.zsync" -delete
@@ -264,11 +249,11 @@ make_zsync(){
 }
 
 gen_permalink(){
-    if [[ ${edition} == "community" ]] || [[ ${edition} == "garuda" ]]; then
+    if [[ ${edition} == "community" ]] || [[ ${edition} == "persianosx" ]]; then
         if [[ -f "${iso_dir}/${iso_file}" ]]; then
             msg2 "Creating download link ..."
-            direct_url="https://sourceforge.net/projects/garuda-linux/files/${iso_file}"
-            [[ ${edition} == "community" ]] && direct_url="https://sourceforge.net/projects/garuda-linux/files/${iso_file}"
+            direct_url="https://sourceforge.net/projects/persianosx/files/${iso_file}"
+            [[ ${edition} == "community" ]] && direct_url="https://sourceforge.net/projects/persianosx/files/${iso_file}"
             ## html permalink
             html_doc="<!DOCTYPE HTML>"
             html_doc+="<meta charset=\"UTF-8\">"
@@ -363,7 +348,7 @@ make_image_root() {
 
         chroot_create "${path}" "${packages}" || die
 
-        echo -e "TIMESTAMP=${dist_timestamp}\nCODENAME=${dist_codename}" >> "${path}/usr/lib/garuda/garuda-release"
+        echo -e "TIMESTAMP=${dist_timestamp}\nCODENAME=${dist_codename}" >> "${path}/usr/lib/distro-tools/persianosx-release"
 
         # /build/grub needs to exist if grub is in use, otherwise grub-mkconfig will fail on calamares in BIOS mode
         if [[ "${efi_boot_loader}" == "grub" ]]; then
@@ -394,7 +379,7 @@ make_image_desktop() {
         [[ -e ${profile_dir}/desktop-overlay-common ]] && copy_overlay "${profile_dir}/desktop-overlay-common" "${path}"
         [[ -e ${profile_dir}/desktop-overlay ]] && copy_overlay "${profile_dir}/desktop-overlay" "${path}"
 
-        if [[ -e "${path}/usr/share/calamares/branding/garuda/branding.desc" ]]; then
+        if [[ -e "${path}/usr/share/calamares/branding/persianosx/branding.desc" ]]; then
             configure_branding "${path}"
             msg "Done [Distribution: Release ${dist_release} Codename ${dist_codename}]"
         fi
@@ -435,7 +420,7 @@ make_image_live() {
         [[ -e ${profile_dir}/live-overlay ]] && copy_overlay "${profile_dir}/live-overlay" "${path}"
         configure_live_image "${path}"
 
-        if [[ -e "${path}/usr/share/calamares/branding/garuda/branding.desc" ]]; then
+        if [[ -e "${path}/usr/share/calamares/branding/persianosx/branding.desc" ]]; then
             configure_branding "${path}"
             msg "Done [Distribution: Release ${dist_release} Codename ${dist_codename}]"
         fi
@@ -454,8 +439,8 @@ make_image_live() {
 
 make_image_mhwd() {
     if [[ ! -e ${work_dir}/build.${FUNCNAME} ]]; then
-        msg "Prepare [drivers repository] (ghtfs)"
-        local path="${work_dir}/ghtfs"
+        msg "Prepare [drivers repository] (drivers)"
+        local path="${work_dir}/drivers"
         mkdir -p ${path}${mhwd_repo}
 
         mount_fs_select "${path}"
@@ -475,7 +460,7 @@ make_image_mhwd() {
         umount_fs
         clean_up_image "${path}"
         : > ${work_dir}/build.${FUNCNAME}
-        msg "Done [drivers repository] (ghtfs)"
+        msg "Done [drivers repository] (drivers)"
     fi
 }
 

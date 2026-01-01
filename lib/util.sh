@@ -213,15 +213,15 @@ init_common(){
 
     [[ -z ${target_arch} ]] && target_arch=$(uname -m)
 
-    [[ -z ${cache_dir} ]] && cache_dir='/var/cache/garuda-tools/garuda-builds'
+    [[ -z ${cache_dir} ]] && cache_dir='/var/cache/distro-tools/distro-builds'
 
-    [[ -z ${chroots_dir} ]] && chroots_dir='/var/cache/garuda-tools/garuda-chroots'
+    [[ -z ${chroots_dir} ]] && chroots_dir='/var/cache/distro-tools/persianosx-chroots'
 
-    [[ -z ${log_dir} ]] && log_dir='/var/cache/garuda-tools/garuda-logs'
+    [[ -z ${log_dir} ]] && log_dir='/var/cache/distro-tools/distro-tools-logs'
 
     [[ -z ${build_mirror} ]] && build_mirror='http://mirrors.kernel.org'
 
-    [[ -z ${tmp_dir} ]] && tmp_dir='/tmp/garuda-tools'
+    [[ -z ${tmp_dir} ]] && tmp_dir='/tmp/distro-tools'
 }
 
 init_buildtree(){
@@ -231,7 +231,7 @@ init_buildtree(){
 
     [[ -z ${repo_tree[@]} ]] && repo_tree=('core' 'extra' 'community' 'multilib')
 
-    [[ -z ${host_tree} ]] && host_tree='https://gitlab.com/garuda-linux'
+    [[ -z ${host_tree} ]] && host_tree='https://github.com/p30developer'
 
     [[ -z ${host_tree_abs} ]] && host_tree_abs='https://projects.archlinux.org/git/svntogit'
 }
@@ -319,7 +319,7 @@ init_buildiso(){
 
     iso_name=$(get_osid)
 
-    [[ -z ${dist_branding} ]] && dist_branding="garuda"
+    [[ -z ${dist_branding} ]] && dist_branding="persianosx"
 
     [[ -z ${iso_compression} ]] && iso_compression='xz'
 
@@ -382,9 +382,9 @@ load_config(){
 
     [[ -f $1 ]] || return 1
 
-    garuda_tools_conf="$1"
+    distro_tools_conf="$1"
 
-    [[ -r ${garuda_tools_conf} ]] && source ${garuda_tools_conf}
+    [[ -r ${distro_tools_conf} ]] && source ${distro_tools_conf}
 
     init_common
 
@@ -424,15 +424,15 @@ load_profile_config(){
 
     [[ -z ${efi_boot_loader} ]] && efi_boot_loader="grub"
 
-    [[ -z ${hostname} ]] && hostname="garuda"
+    [[ -z ${hostname} ]] && hostname="persianosx"
 
-    [[ -z ${username} ]] && username="garuda"
+    [[ -z ${username} ]] && username="persianosx"
 
     [[ -z ${use_dracut} ]] && use_dracut="true"
 
-    [[ -z ${plymouth_theme} ]] && plymouth_theme="garuda"
+    [[ -z ${plymouth_theme} ]] && plymouth_theme="persianosx"
 
-    [[ -z ${password} ]] && password="garuda"
+    [[ -z ${password} ]] && password="persianosx"
 
     [[ -z ${user_shell} ]] && user_shell='/bin/zsh'
 
@@ -449,7 +449,7 @@ load_profile_config(){
     [[ -z ${disable_systemd[@]} ]] && disable_systemd=('pacman-init')
 
     if [[ -z ${enable_systemd_live[@]} ]]; then
-        enable_systemd_live=('garuda-live' 'ght-live' 'pacman-init' 'mirrors-live')
+        enable_systemd_live=('persianosx-live' 'driver-live' 'pacman-init' 'mirrors-live')
     fi
 
     if [[ ${displaymanager} != "none" ]]; then
@@ -468,7 +468,7 @@ load_profile_config(){
 
     [[ -z ${chrootcfg} ]] && chrootcfg='false'
 
-    netgroups="https://gitlab.com/garuda-linux/packages/pkgbuilds/garuda-pkgbuilds/-/raw/master/pkgbuilds/calamares-netinstall-settings/netinstall-software.yaml"
+    netgroups="https://github.com/p30developer/pkgbuilds/calamares-netinstall-settings/netinstall-software.yaml"
 
     [[ -z ${geoip} ]] && geoip='true'
 
@@ -492,11 +492,11 @@ get_edition(){
 
 get_project(){
     case "${edition}" in
-        'garuda')
-            project="garuda"
+        'persianosx')
+            project="persianosx"
         ;;
-        'garuda-wm')
-            project="garuda-wm"
+        'persianosx-wm')
+            project="persianosx-wm"
         ;;
     esac
     echo "${project}"
@@ -641,10 +641,10 @@ load_pkgs(){
     case "${edition}" in
         'sonar')
             _edition="s|>sonar||g"
-            _edition_rm="s|>garuda.*||g"
+            _edition_rm="s|>persianosx.*||g"
         ;;
         *)
-            _edition="s|>garuda||g"
+            _edition="s|>persianosx||g"
             _edition_rm="s|>sonar.*||g"
         ;;
     esac
@@ -712,7 +712,7 @@ clean_dir(){
 write_repo_conf(){
     local repos=$(find $USER_HOME -type f -name "repo_info")
     local path name
-    _workdir='/var/cache/garuda-tools'
+    _workdir='/var/cache/distro-tools'
     [[ -z ${repos[@]} ]] && run_dir=${_workdir}/iso-profiles && return 1
     for r in ${repos[@]}; do
         path=${r%/repo_info}
@@ -730,7 +730,7 @@ load_user_info(){
         USER_HOME=$HOME
     fi
 
-    USERCONFDIR="$USER_HOME/.config/garuda-tools"
+    USERCONFDIR="$USER_HOME/.config/distro-tools"
     prepare_dir "${USERCONFDIR}"
 }
 
@@ -741,15 +741,15 @@ load_run_dir(){
 }
 
 show_version(){
-    msg "garuda-tools"
+    msg "distro-tools"
     msg2 "version: %s" "${version}"
 }
 
 show_config(){
-    if [[ -f ${USERCONFDIR}/garuda-tools.conf ]]; then
-        msg2 "config: %s" "~/.config/garuda-tools/garuda-tools.conf"
+    if [[ -f ${USERCONFDIR}/distro-tools.conf ]]; then
+        msg2 "config: %s" "~/.config/distro-tools/distro-tools.conf"
     else
-        msg2 "config: %s" "${garuda_tools_conf}"
+        msg2 "config: %s" "${distro_tools_conf}"
     fi
 }
 
@@ -847,14 +847,14 @@ create_chksums() {
 }
 
 init_profiles() {
-	_workdir='/var/cache/garuda-tools'
+	_workdir='/var/cache/distro-tools'
 	if [[ -d ${_workdir}/iso-profiles ]]; then
 		rm -Rf ${_workdir}/iso-profiles
 	fi
-	git clone -q --depth 1 -b ${branch} https://gitlab.com/garuda-linux/tools/iso-profiles.git ${_workdir}/iso-profiles/
+	git clone -q --depth 1 -b ${branch} https://github.com/p30developer/iso-profiles.git ${_workdir}/iso-profiles/
 
 	#Check if git clone is done
-	if [[ -d ${_workdir}/iso-profiles/garuda ]] || [[ -d ${_workdir}/iso-profiles/community ]]; then
+	if [[ -d ${_workdir}/iso-profiles/persianosx ]] || [[ -d ${_workdir}/iso-profiles/community ]]; then
 
 		for i in ${_workdir}/iso-profiles/.gitignore ${_workdir}/iso-profiles/README.md; do
 		rm -f $i
@@ -863,7 +863,7 @@ init_profiles() {
 		for i in ${_workdir}/iso-profiles/.git ${_workdir}/iso-profiles/sonar; do
 			rm -Rf $i
 		done
-	else msg2 "Impossible to initialize iso-profiles, please check internet connection or browse at 'https://gitlab.com/garuda-linux/tools/iso-profiles'"
+	else msg2 "Impossible to initialize iso-profiles, please check internet connection or browse at 'https://github.com/p30developer/iso-profiles.git'"
 	exit 1
 	fi
 }

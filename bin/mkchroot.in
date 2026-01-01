@@ -106,7 +106,7 @@ else
     "${cache_dirs[@]/#/--cachedir=}" "$@" || die 'Failed to install all packages'
 fi
 
-echo "$version" > "$working_dir/.garuda-tools"
+echo "$version" > "$working_dir/.distro-tools"
 
 if ${build_locales}; then
     info "Using build locales ..."
